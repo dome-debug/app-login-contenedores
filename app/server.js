@@ -7,7 +7,7 @@ const fs = require('fs');
 const app = express();
 app.set('trust proxy', 1);
 
-const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+const pool = new Pool({ connectionString: process.env.DATABASE_URL, connectionTimeoutMillis: 5000 });
 
 app.use(express.urlencoded({ extended: false }));
 app.use(session({
@@ -50,6 +50,8 @@ app.get('/bienvenida', (req, res) => {
 
 app.get('/logout', (req, res) => req.session.destroy(() => res.redirect('/login')));
 
+app.listen(process.env.PORT || 3000, '0.0.0.0', () => console.log('App lista'));
+
 (async () => {
   for (let i = 0; i < 30; i++) {
     try {
@@ -61,5 +63,4 @@ app.get('/logout', (req, res) => req.session.destroy(() => res.redirect('/login'
       await new Promise(r => setTimeout(r, 2000));
     }
   }
-  app.listen(process.env.PORT || 3000, '0.0.0.0', () => console.log('App lista'));
 })();
