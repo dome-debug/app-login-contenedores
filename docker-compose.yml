@@ -14,7 +14,7 @@ services:
 
   app:
     build: ./app
-    image: gabdome/app-login:1.0.0
+    image: gabdome/app-login:v1.0
     container_name: app
     env_file: .env
     depends_on:
